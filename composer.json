@@ -1,0 +1,14 @@
+{
+    "name": "testwork/vseprosto",
+    "description": "test work",
+    "authors": [
+        {
+            "name": "sergasd",
+            "email": "sergasd@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"TestWork\\": "app/"}
+    }
+}
