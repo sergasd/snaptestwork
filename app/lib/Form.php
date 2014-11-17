@@ -41,6 +41,9 @@ abstract class Form
 
         foreach ( $data[$this->className] as $name => $value) {
             $methodName = 'set' . ucfirst($name);
+            $methodName = preg_replace_callback('~_(\w)~', function($matches){
+                return mb_strtoupper($matches[1]);
+            }, $methodName);
 
             if (method_exists($this->model, $methodName)) {
                 $this->model->$methodName($value);
