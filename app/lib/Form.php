@@ -9,7 +9,6 @@ abstract class Form
 
     protected $className = '';
 
-
     public function hasErrors()
     {
         return count($this->errors) > 0;
@@ -23,6 +22,13 @@ abstract class Form
     protected function addError($error)
     {
         $this->errors[] = $error;
+    }
+
+    public function isValid()
+    {
+        $this->errors = [];
+        $this->applyRules();
+        return !$this->hasErrors();
     }
 
     public function load($data)
@@ -42,5 +48,7 @@ abstract class Form
         $this->errors = [];
         return true;
     }
+
+    abstract protected function applyRules();
 
 } 

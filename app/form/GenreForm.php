@@ -21,7 +21,7 @@ class GenreForm extends Form
         $this->genreRepository = $genreRepository;
     }
 
-    public function isValid()
+    protected function applyRules()
     {
         if (mb_strlen($this->model->getName()) < 3) {
             $this->addError('Min length error < 3');
@@ -31,8 +31,6 @@ class GenreForm extends Form
         if (count($existsGenre)) {
             $this->addError('Already exists');
         }
-
-        return !$this->hasErrors();
     }
 
 }
