@@ -3,18 +3,17 @@
 namespace TestWork\form;
 
 
+use TestWork\lib\Form;
 use TestWork\models\Genre;
 use TestWork\repository\GenreRepository;
 
-class GenreForm
+class GenreForm extends Form
 {
     protected $model;
 
     protected $genreRepository;
 
     protected $className = 'Genre';
-
-    protected $errors = [];
 
     public function __construct(Genre $model, GenreRepository $genreRepository)
     {
@@ -36,38 +35,4 @@ class GenreForm
         return !$this->hasErrors();
     }
 
-    public function hasErrors()
-    {
-        return count($this->errors) > 0;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    public function load($data)
-    {
-        if (!isset($data[$this->className])) {
-            return false;
-        }
-
-        foreach ( $data[$this->className] as $name => $value) {
-            $methodName = 'set' . ucfirst($name);
-
-            if (method_exists($this->model, $methodName)) {
-                $this->model->$methodName($value);
-            }
-        }
-
-        $this->errors = [];
-        return true;
-    }
-
-    protected function addError($error)
-    {
-        $this->errors[] = $error;
-    }
-
-
-} 
+}
