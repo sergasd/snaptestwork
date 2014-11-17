@@ -29,6 +29,9 @@ $container->add('db', function() use($container) {
     return $pdo;
 });
 
+$container->add('repository.genre', function() use($container){
+    return new TestWork\repository\GenreRepository($container->get('db'));
+});
 
 $route = array_key_exists('r', $_GET) ? $_GET['r'] : $container->getParam('defaultRoute');
 $router = $container->get('router');
