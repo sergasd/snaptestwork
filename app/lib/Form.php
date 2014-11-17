@@ -5,6 +5,8 @@ namespace TestWork\lib;
 
 abstract class Form
 {
+    protected $model;
+
     protected $errors = [];
 
     protected $className = '';
