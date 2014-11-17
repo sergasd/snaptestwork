@@ -29,5 +29,10 @@ class Controller
         return $content;
     }
 
+    public function redirect($url, $code = 302)
+    {
+        header("Location: $url", $code);
+    }
+
 
 } 
