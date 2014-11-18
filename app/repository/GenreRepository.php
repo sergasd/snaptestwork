@@ -12,18 +12,8 @@ class GenreRepository extends Repository
 
     protected $className = 'TestWork\\models\\Genre';
 
-    protected $attributes = ['id', 'name'];
+    protected $attributes = ['name'];
 
-    public function save(Genre $model)
-    {
-
-        if ($model->getId()) {
-            $this->update($model);
-        } else {
-            $this->insert($model);
-        }
-
-    }
 
     public function findById($id)
     {
@@ -50,29 +40,5 @@ class GenreRepository extends Repository
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
     }
-
-
-    protected function update(Genre $model)
-    {
-        $sql = "UPDATE $this->tableName SET name = :name WHERE id = :id";
-        $stmt = $this->connection->prepare($sql);
-        $params = [
-            ':id' => $model->getId(),
-        ];
-        return $stmt->execute($params);
-    }
-
-    protected function insert(Genre $model)
-    {
-        $sql = "INSERT INTO $this->tableName SET name = :name";
-        $stmt = $this->connection->prepare($sql);
-        $params = [
-            ':name' => $model->getName(),
-        ];
-        $stmt->execute($params);
-        //set id with reflection
-    }
-
-
 
 } 
