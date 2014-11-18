@@ -68,6 +68,19 @@ class Repository
         }
     }
 
+    protected function indexBy($data, $attribute = 'id')
+    {
+        $indexed = [];
+        $getter = Naming::toCamelCase('get' . ucfirst($attribute));
+        foreach ($data as $item) {
+            if (method_exists($item, $getter)) {
+                $indexed[$item->$getter()] = $item;
+            }
+        }
+
+        return $indexed;
+    }
+
     private function setId($model)
     {
         $reflection = new \ReflectionObject($model);
