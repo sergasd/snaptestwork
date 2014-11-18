@@ -49,7 +49,10 @@ class Repository
         $sql .= implode(', ', $attributes);
 
         $stmt = $this->getConnection()->prepare($sql);
-        $stmt->execute($params);
+
+        if ($stmt->execute($params)) {
+            $this->setId($model);
+        }
     }
 
     protected function update($model)
@@ -63,6 +66,15 @@ class Repository
         if (method_exists($model, $getter)) {
             return $model->$getter();
         }
+    }
+
+    private function setId($model)
+    {
+        $reflection = new \ReflectionObject($model);
+        $property = $reflection->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($model, $this->getConnection()->lastInsertId());
+        $property->setAccessible(false);
     }
 
 } 
