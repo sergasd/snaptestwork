@@ -15,6 +15,8 @@ class Repository
 
     protected $attributes = [];
 
+    private static $inCounter = 0;
+
     public function __construct(\PDO $connection)
     {
         $this->connection = $connection;
@@ -36,6 +38,39 @@ class Repository
         } else {
             $this->insert($model);
         }
+    }
+
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM $this->tableName WHERE id = :id LIMIT 1";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetchObject($this->className);
+    }
+
+    public function findBy($attributes)
+    {
+        $sql = "SELECT * FROM $this->tableName WHERE 1 ";
+        $params = [];
+        foreach ($attributes as $name => $value) {
+            if (!in_array($name, $this->attributes)) {
+                continue;
+            }
+
+            $paramName = ":$name";
+
+            if (is_array($value)) {
+                $sql .= " AND $name IN (" . $this->generateInCondition($value, $params) . ')';
+            } else {
+                $sql .= " AND $name = $paramName";
+                $params[$paramName] = $value;
+            }
+        }
+
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
     }
 
     protected function insert($model)
@@ -88,6 +123,24 @@ class Repository
         $property->setAccessible(true);
         $property->setValue($model, $this->getConnection()->lastInsertId());
         $property->setAccessible(false);
+    }
+
+    private function generateInCondition($values, &$params)
+    {
+        if (empty($values)) {
+            return 'FALSE';
+        }
+
+        $counter =  ++self::$inCounter;
+        $inValues = [];
+        foreach ($values as $key => $value) {
+            $key = (int) $key;
+            $paramName = ":in_{$counter}_{$key}";
+            $inValues[] = $paramName;
+            $params[$paramName] = $value;
+        }
+
+        return implode(', ', $inValues);
     }
 
 } 
