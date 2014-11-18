@@ -14,6 +14,7 @@ class GenreRepository extends Repository
 
     protected $attributes = ['name'];
 
+    private static $inCounter = 0;
 
     public function findById($id)
     {
@@ -28,8 +29,15 @@ class GenreRepository extends Repository
         $sql = "SELECT * FROM $this->tableName WHERE 1 ";
         $params = [];
         foreach ($attributes as $name => $value) {
-            if (in_array($name, $this->attributes)) {
-                $paramName = ":$name";
+            if (!in_array($name, $this->attributes)) {
+                continue;
+            }
+
+            $paramName = ":$name";
+
+            if (is_array($value)) {
+                $sql .= " AND $name IN (" . $this->generateInCondition($value, $params) . ')';
+            } else {
                 $sql .= " AND $name = $paramName";
                 $params[$paramName] = $value;
             }
@@ -39,6 +47,24 @@ class GenreRepository extends Repository
         $stmt->execute($params);
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
+    }
+
+    private function generateInCondition($values, &$params)
+    {
+        if (empty($values)) {
+            return 'FALSE';
+        }
+
+        $counter =  ++self::$inCounter;
+        $inValues = [];
+        foreach ($values as $key => $value) {
+            $key = (int) $key;
+            $paramName = ":in_{$counter}_{$key}";
+            $inValues[] = $paramName;
+            $params[$paramName] = $value;
+        }
+
+        return implode(', ', $inValues);
     }
 
 } 
