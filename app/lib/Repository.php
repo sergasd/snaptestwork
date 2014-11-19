@@ -58,7 +58,7 @@ class Repository
             $paramName = ":$name";
 
             if (is_array($value)) {
-                $sql .= " AND $name IN (" . $this->generateInCondition($value, $params) . ')';
+                $sql .= " AND " . $this->generateInCondition($name, $value, $params);
             } else {
                 $sql .= " AND $name = $paramName";
                 $params[$paramName] = $value;
@@ -138,10 +138,10 @@ class Repository
         }
     }
 
-    private function generateInCondition($values, &$params)
+    private function generateInCondition($name, $values, &$params)
     {
         if (empty($values)) {
-            return 'FALSE';
+            return '0 = 1';
         }
 
         $counter =  ++self::$inCounter;
@@ -153,7 +153,7 @@ class Repository
             $params[$paramName] = $value;
         }
 
-        return implode(', ', $inValues);
+        return "$name IN (" . implode(', ', $inValues) . ')';
     }
 
 } 
