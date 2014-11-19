@@ -14,7 +14,7 @@ class VideoRepository extends Repository
 
     protected $tableName = 'video';
 
-    protected $className = 'TestWork\\models\\Genre';
+    protected $className = 'TestWork\\models\\Video';
 
     protected $attributes = ['title', 'original_title', 'country'];
 
