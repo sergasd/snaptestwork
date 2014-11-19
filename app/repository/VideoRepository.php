@@ -2,7 +2,9 @@
 
 namespace TestWork\repository;
 
+use TestWork\lib\interfaces\ImageHandler;
 use TestWork\lib\Repository;
+use TestWork\lib\UploadedFile;
 use TestWork\models\Genre;
 use TestWork\models\Video;
 
@@ -18,14 +20,21 @@ class VideoRepository extends Repository
 
     private $genreRepository;
 
-    public function __construct(\PDO $connection, GenreRepository $genreRepository)
+    private $imageHandler;
+
+    private $imagesOutputDir;
+
+    public function __construct(\PDO $connection, GenreRepository $genreRepository, ImageHandler $imageHandler, $imagesOutputDir)
     {
         parent::__construct($connection);
         $this->genreRepository = $genreRepository;
+        $this->imageHandler = $imageHandler;
+        $this->imagesOutputDir = $imagesOutputDir;
     }
 
     /**
      * @param Video $model
+     * @throws \Exception
     */
     public function save($model)
     {
@@ -34,9 +43,41 @@ class VideoRepository extends Repository
         try {
             parent::save($model);
             $this->saveGenres($model);
+            $this->saveImage($model);
+
             $this->getConnection()->commit();
         } catch (\Exception $e) {
             $this->getConnection()->rollBack();
+            throw $e;
+        }
+    }
+
+
+    /**
+     * @param Video $model
+    */
+    private function saveImage($model)
+    {
+        $image = $model->getImage();
+        if (!$image instanceof UploadedFile) {
+            return;
+        }
+
+        $originalSize = getimagesize($image->getTmpName());
+        $sizes = [
+            'original' => [$originalSize[0], $originalSize[1]],
+            'small' => [100, 145],
+            'middle' => [150, 218]
+        ];
+
+        $imagesDir = "$this->imagesOutputDir/{$model->getId()}";
+        if (!is_dir($imagesDir)) {
+            mkdir($imagesDir, 0777, true);
+        }
+
+        foreach ($sizes as $sizeName => $dimensions) {
+            $targetFile = "$imagesDir/$sizeName.png";
+            $this->imageHandler->resize($image->getTmpName(), $targetFile, $dimensions[0], $dimensions[1]);
         }
     }
 

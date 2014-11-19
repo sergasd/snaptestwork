@@ -23,6 +23,11 @@ class VideoForm extends Form
         if (empty($title)) {
             $this->addError('Empty title');
         }
+
+        $image = $this->getFile('image');
+        if ($image) {
+            $this->model->setImage($image);
+        }
     }
 
 } 

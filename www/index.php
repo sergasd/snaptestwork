@@ -34,8 +34,19 @@ $container->add('repository.genre', function() use($container){
 });
 
 $container->add('repository.video', function() use($container){
-    return new TestWork\repository\VideoRepository($container->get('db'), $container->get('repository.genre'));
+    $imagesOutputDir = __DIR__ . '/files/video';
+    return new TestWork\repository\VideoRepository(
+        $container->get('db'),
+        $container->get('repository.genre'),
+        $container->get('image_handler'),
+        $imagesOutputDir
+    );
 });
+
+$container->add('image_handler', function() use($container){
+    return new \TestWork\lib\ImagicImageHandler();
+});
+
 
 $route = array_key_exists('r', $_GET) ? $_GET['r'] : $container->getParam('defaultRoute');
 $router = $container->get('router');

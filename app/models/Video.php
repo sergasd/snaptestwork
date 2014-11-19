@@ -3,6 +3,7 @@
 namespace TestWork\models;
 
 use TestWork\helpers\Date;
+use TestWork\lib\UploadedFile;
 
 class Video
 {
@@ -34,6 +35,10 @@ class Video
 
     private $genresString;
 
+    /**
+     * @var UploadedFile
+    */
+    private $image;
 
     public function getId()
     {
@@ -160,5 +165,14 @@ class Video
         $this->genresString = $genresString;
     }
 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
 
 } 

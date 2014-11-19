@@ -16,7 +16,7 @@ use TestWork\helpers\Html;
     </div>
 <?php endif ?>
 
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     <div>
         <label for="Video_title">Title</label>
         <input type="text" name="Video[title]" id="Video_title" value="<?=Html::encode($video->getTitle())?>"/>
@@ -30,6 +30,11 @@ use TestWork\helpers\Html;
     <div>
         <label for="Video_country">Country</label>
         <input type="text" name="Video[country]" id="Video_country" value="<?=Html::encode($video->getCountry())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_image">Image</label>
+        <input type="file" name="Video[image]" id="Video_image" />
     </div>
 
     <div>
