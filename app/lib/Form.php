@@ -3,6 +3,7 @@
 namespace TestWork\lib;
 
 use TestWork\helpers\Naming;
+use TestWork\lib\UploadedFile;
 
 abstract class Form
 {
@@ -50,6 +51,22 @@ abstract class Form
 
         $this->errors = [];
         return true;
+    }
+
+    /**
+     * @return UploadedFile
+    */
+    protected function getFile($name)
+    {
+        if (!empty($_FILES[$this->className]['tmp_name'][$name])) {
+            return new UploadedFile(
+                $_FILES[$this->className]['name'][$name],
+                $_FILES[$this->className]['type'][$name],
+                $_FILES[$this->className]['tmp_name'][$name],
+                $_FILES[$this->className]['error'][$name],
+                $_FILES[$this->className]['size'][$name]
+            );
+        }
     }
 
     abstract protected function applyRules();
