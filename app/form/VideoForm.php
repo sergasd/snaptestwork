@@ -24,10 +24,8 @@ class VideoForm extends Form
 
     protected function applyRules()
     {
-        $title = $this->model->getTitle();
-        if (empty($title)) {
-            $this->addError('Empty title');
-        }
+        $this->applyRule('title', 'required');
+        $this->applyRule('country', 'required');
     }
 
     protected function afterLoad($data)

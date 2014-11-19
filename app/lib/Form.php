@@ -72,6 +72,26 @@ abstract class Form
         }
     }
 
+    protected function applyRule($attribute, $rule, $options = [])
+    {
+        $options['attribute'] = $attribute;
+        $getter = Naming::toCamelCase('get' . ucfirst($attribute));
+        if (!method_exists($this->model, $getter)) {
+            throw new \Exception("getter $getter not found");
+        }
+
+        $value = $this->model->$getter();
+        $validatorMethodName = "validate" . ucfirst($rule);
+        if (method_exists('TestWork\\helpers\\Validator', $validatorMethodName)) {
+            $isValid = call_user_func_array("TestWork\\helpers\\Validator::$validatorMethodName", [$value, &$options]);
+            if (!$isValid) {
+                $this->addError($options['message']);
+            }
+        } else {
+            throw new \Exception('validator not found');
+        }
+    }
+
     protected function beforeLoad($data)
     {
 
