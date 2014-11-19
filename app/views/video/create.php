@@ -35,6 +35,12 @@ use TestWork\helpers\Html;
     <div>
         <label for="Video_image">Image</label>
         <input type="file" name="Video[image]" id="Video_image" />
+
+        <?php if ($video->getId() && $video->getImageUrl('middle')): ?>
+            <div class="video-image">
+                <img src="<?=Html::encode($video->getImageUrl('middle'))?>" alt="image"/>
+            </div>
+        <?php endif ?>
     </div>
 
     <div>
