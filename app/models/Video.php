@@ -3,6 +3,7 @@
 namespace TestWork\models;
 
 use TestWork\helpers\Date;
+use TestWork\lib\Application;
 use TestWork\lib\UploadedFile;
 
 class Video
@@ -173,6 +174,18 @@ class Video
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    public function getImagePath($sizeName = 'original')
+    {
+        return Application::getContainer()->getParam('webPath') . '/files/video/' . $this->getId() . '/' . $sizeName . '.png';
+    }
+
+    public function getImageUrl($sizeName = 'original')
+    {
+        $webPath = Application::getContainer()->getParam('webPath');
+        $baseUrl = Application::getContainer()->getParam('baseUrl');
+        return $baseUrl . str_replace($webPath, '', $this->getImagePath($sizeName));
     }
 
 } 

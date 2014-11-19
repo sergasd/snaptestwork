@@ -23,6 +23,8 @@ use TestWork\helpers\Html;
         <?php foreach ($videos as $video): ?>
             <div class="video-list-item">
                 <?= Html::encode($video->getTitle())?> <br/>
+                <img src="<?= $video->getImageUrl('small')?>" alt="image"/> <br/>
+
                 <a href="?r=video/edit&id=<?= Html::encode($video->getId())?>">edit</a>
                 <a href="?r=video/delete&id=<?= Html::encode($video->getId())?>">delete</a>
             </div>
