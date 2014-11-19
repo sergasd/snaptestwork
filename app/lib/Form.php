@@ -37,11 +37,13 @@ abstract class Form
 
     public function load($data)
     {
+        $this->beforeLoad($data);
+
         if (!isset($data[$this->className])) {
             return false;
         }
 
-        foreach ( $data[$this->className] as $name => $value) {
+        foreach ($data[$this->className] as $name => $value) {
             $methodName = Naming::toCamelCase('set' . ucfirst($name));
 
             if (method_exists($this->model, $methodName)) {
@@ -50,6 +52,7 @@ abstract class Form
         }
 
         $this->errors = [];
+        $this->afterLoad($data);
         return true;
     }
 
@@ -67,6 +70,16 @@ abstract class Form
                 $_FILES[$this->className]['size'][$name]
             );
         }
+    }
+
+    protected function beforeLoad($data)
+    {
+
+    }
+
+    protected function afterLoad($data)
+    {
+
     }
 
     abstract protected function applyRules();
