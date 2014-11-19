@@ -34,7 +34,7 @@ $container->add('repository.genre', function() use($container){
 });
 
 $container->add('repository.video', function() use($container){
-    return new TestWork\repository\VideoRepository($container->get('db'));
+    return new TestWork\repository\VideoRepository($container->get('db'), $container->get('repository.genre'));
 });
 
 $route = array_key_exists('r', $_GET) ? $_GET['r'] : $container->getParam('defaultRoute');
