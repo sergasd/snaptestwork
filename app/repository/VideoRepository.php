@@ -16,7 +16,7 @@ class VideoRepository extends Repository
 
     protected $className = 'TestWork\\models\\Video';
 
-    protected $attributes = ['title', 'original_title', 'country'];
+    protected $attributes = ['title', 'original_title', 'country', 'begin_year', 'end_year', 'producer', 'actors', 'duration', 'premiere_date', 'anons', 'description'];
 
     private $genreRepository;
 

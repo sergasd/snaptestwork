@@ -26,6 +26,16 @@ class VideoForm extends Form
     {
         $this->applyRule('title', 'required');
         $this->applyRule('country', 'required');
+        $this->applyRule('begin_year', 'required');
+        $this->applyRule('begin_year', 'number');
+        $this->applyRule('end_year', 'required');
+        $this->applyRule('end_year', 'number');
+        $this->applyRule('producer', 'required');
+        $this->applyRule('actors', 'required');
+        $this->applyRule('duration', 'required');
+        $this->applyRule('duration', 'number');
+        $this->applyRule('anons', 'required');
+        $this->applyRule('description', 'required');
     }
 
     protected function afterLoad($data)

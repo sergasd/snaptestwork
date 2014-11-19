@@ -49,6 +49,46 @@ use TestWork\helpers\Html;
     </div>
 
     <div>
+        <label for="Video_begin_year">begin year</label>
+        <input type="text" name="Video[begin_year]" id="Video_begin_year" value="<?=Html::encode($video->getBeginYear())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_end_year">end year</label>
+        <input type="text" name="Video[end_year]" id="Video_end_year" value="<?=Html::encode($video->getEndYear())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_producer">producer</label>
+        <input type="text" name="Video[producer]" id="Video_producer" value="<?=Html::encode($video->getProducer())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_actors">actors</label>
+        <input type="text" name="Video[actors]" id="Video_actors" value="<?=Html::encode($video->getActors())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_duration">duration</label>
+        <input type="text" name="Video[duration]" id="Video_duration" value="<?=Html::encode($video->getDuration())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_premiere_date">Premiere date</label>
+        <input type="text" name="Video[premiere_date]" id="Video_premiere_date" value="<?=Html::encode($video->getPremiereDate())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_anons">anons</label>
+        <input type="text" name="Video[anons]" id="Video_anons" value="<?=Html::encode($video->getAnons())?>"/>
+    </div>
+
+    <div>
+        <label for="Video_description">description</label>
+        <input type="text" name="Video[description]" id="Video_description" value="<?=Html::encode($video->getDescription())?>"/>
+    </div>
+
+    <div>
         <input type="submit" value="submit"/>
     </div>
 </form>
