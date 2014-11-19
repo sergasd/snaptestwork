@@ -34,6 +34,20 @@ class VideoController extends Controller
         ]);
     }
 
+    public function deleteAction()
+    {
+        $id = isset($_GET['id']) ? $_GET['id'] : false;
+        $model = $this->getVideoRepository()->findById($id);
+
+        if (!$model) {
+            throw new \Exception('model not found');
+        }
+
+        if ($this->getVideoRepository()->delete($model)) {
+            $this->redirect('?r=video/index');
+        }
+    }
+
     /**
      * @return VideoRepository
     */

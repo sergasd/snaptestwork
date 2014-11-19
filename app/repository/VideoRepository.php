@@ -49,6 +49,22 @@ class VideoRepository extends Repository
         }
     }
 
+    public function delete($model)
+    {
+        $this->getConnection()->beginTransaction();
+
+        try {
+            parent::delete($model);
+            $this->deleteImage($model);
+
+            $this->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->getConnection()->rollBack();
+            throw $e;
+        }
+
+        return true;
+    }
 
     /**
      * @param Video $model
@@ -78,6 +94,21 @@ class VideoRepository extends Repository
         }
     }
 
+    /**
+     * @param Video $model
+     */
+    private function deleteImage($model)
+    {
+        $imagesDir = dirname($model->getImagePath());
+        if (!is_dir($imagesDir)) {
+            return;
+        }
+
+        foreach (glob("$imagesDir/*") as $file) {
+            unlink($file);
+        }
+        rmdir($imagesDir);
+    }
 
     /**
      * @param Video $model
