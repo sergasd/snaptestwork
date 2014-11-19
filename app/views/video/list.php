@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \TestWork\models\Video[] $videos
+ */
+use TestWork\helpers\Html;
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,7 +20,13 @@
 
         <br/> <br/>
 
-        videos list
+        <?php foreach ($videos as $video): ?>
+            <div class="video-list-item">
+                <?= Html::encode($video->getTitle())?> <br/>
+                <a href="?r=video/edit&id=<?= Html::encode($video->getId())?>">edit</a>
+                <a href="?r=video/delete&id=<?= Html::encode($video->getId())?>">delete</a>
+            </div>
+        <?php endforeach ?>
 
     </div>
 

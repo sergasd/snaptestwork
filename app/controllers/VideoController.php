@@ -13,7 +13,13 @@ class VideoController extends Controller
 
     public function indexAction()
     {
-        return $this->render('video/list');
+        /** @var VideoRepository $videoRepository */
+        $videoRepository = $this->container->get('repository.video');
+        $videos = $videoRepository->findBy([]);
+
+        return $this->render('video/list', [
+            'videos' => $videos,
+        ]);
     }
 
     public function addAction()
