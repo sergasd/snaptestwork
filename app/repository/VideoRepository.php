@@ -22,14 +22,11 @@ class VideoRepository extends Repository
 
     private $imageHandler;
 
-    private $imagesOutputDir;
-
-    public function __construct(\PDO $connection, GenreRepository $genreRepository, ImageHandler $imageHandler, $imagesOutputDir)
+    public function __construct(\PDO $connection, GenreRepository $genreRepository, ImageHandler $imageHandler)
     {
         parent::__construct($connection);
         $this->genreRepository = $genreRepository;
         $this->imageHandler = $imageHandler;
-        $this->imagesOutputDir = $imagesOutputDir;
     }
 
     /**
@@ -70,7 +67,7 @@ class VideoRepository extends Repository
             'middle' => [150, 218]
         ];
 
-        $imagesDir = "$this->imagesOutputDir/{$model->getId()}";
+        $imagesDir = dirname($model->getImagePath());
         if (!is_dir($imagesDir)) {
             mkdir($imagesDir, 0777, true);
         }

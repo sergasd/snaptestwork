@@ -44,12 +44,10 @@ class Application
         });
 
         $container->add('repository.video', function() use($container){
-            $imagesOutputDir = __DIR__ . '/files/video';
             return new VideoRepository(
                 $container->get('db'),
                 $container->get('repository.genre'),
-                $container->get('image_handler'),
-                $imagesOutputDir
+                $container->get('image_handler')
             );
         });
 
