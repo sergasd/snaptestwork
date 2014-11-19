@@ -29,9 +29,7 @@ class Repository
 
     public function save($model)
     {
-        if (!method_exists($model, 'getId')) {
-            throw new \Exception('Method "getId" not found in model');
-        }
+        $this->checkModel($model);
 
         if ($model->getId()) {
             $this->update($model);
@@ -71,6 +69,14 @@ class Repository
         $stmt->execute($params);
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className);
+    }
+
+    public function delete($model)
+    {
+        $this->checkModel($model);
+        $sql = "DELETE FROM $this->tableName WHERE id = :id";
+        $stmt = $this->getConnection()->prepare($sql);
+        return $stmt->execute([':id' => $model->getId()]);
     }
 
     protected function insert($model)
@@ -123,6 +129,13 @@ class Repository
         $property->setAccessible(true);
         $property->setValue($model, $this->getConnection()->lastInsertId());
         $property->setAccessible(false);
+    }
+
+    private function checkModel($model)
+    {
+        if (!method_exists($model, 'getId')) {
+            throw new \Exception('Method "getId" not found in model');
+        }
     }
 
     private function generateInCondition($values, &$params)
