@@ -81,14 +81,8 @@ class Repository
 
     protected function insert($model)
     {
-        $attributes = $params = [];
-        foreach ($this->attributes as $attribute) {
-            $attributes[] = "$attribute = :$attribute";
-            $params[":$attribute"] = $this->getAttributeFromModel($model, $attribute);
-        }
-        $sql = "INSERT INTO $this->tableName SET ";
-        $sql .= implode(', ', $attributes);
-
+        $params = [];
+        $sql = "INSERT INTO $this->tableName SET " . $this->generateSetClause($model, $params);
         $stmt = $this->getConnection()->prepare($sql);
 
         if ($stmt->execute($params)) {
@@ -154,6 +148,17 @@ class Repository
         }
 
         return "$name IN (" . implode(', ', $inValues) . ')';
+    }
+
+    private function generateSetClause($model, &$params)
+    {
+        $attributes = [];
+        foreach ($this->attributes as $attribute) {
+            $attributes[] = "$attribute = :$attribute";
+            $params[":$attribute"] = $this->getAttributeFromModel($model, $attribute);
+        }
+
+        return implode(', ', $attributes);
     }
 
 } 
