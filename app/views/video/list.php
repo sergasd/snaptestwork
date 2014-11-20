@@ -9,16 +9,16 @@ use TestWork\helpers\Html;
 <head>
     <meta charset="UTF-8">
     <title>videos list</title>
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
+    <div class="container">
 
-    <div class="content">
-
-        <a href="?r=video/add">add video</a> <br/>
-        <a href="?r=genre/index">genres</a> <br/>
+        <a class="btn btn-default" href="?r=video/add">add video</a>
+        <a class="btn btn-default" href="?r=genre/index">genres</a>
 
 
-        <br/> <br/>
+        <h1>Video list</h1>
 
         <?php foreach ($videos as $video): ?>
             <div class="video-list-item">
@@ -31,7 +31,6 @@ use TestWork\helpers\Html;
         <?php endforeach ?>
 
     </div>
-
 </body>
 </html>
 
