@@ -75,7 +75,7 @@ use TestWork\helpers\Html;
 
     <div>
         <label for="Video_premiere_date">Premiere date</label>
-        <input type="text" name="Video[premiere_date]" id="Video_premiere_date" value="<?=Html::encode($video->getPremiereDate())?>"/>
+        <input type="text" name="Video[premiere_date]" id="Video_premiere_date" value="<?=Html::encode($video->getPremiereDateFormatted())?>"/>
     </div>
 
     <div>

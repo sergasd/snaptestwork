@@ -3,6 +3,7 @@
 namespace TestWork\form;
 
 
+use TestWork\helpers\Date;
 use TestWork\lib\Form;
 use TestWork\models\Video;
 use TestWork\repository\GenreRepository;
@@ -40,6 +41,8 @@ class VideoForm extends Form
 
     protected function afterLoad($data)
     {
+        $this->model->setPremiereDate(Date::dateToDatabase($this->model->getPremiereDateFormatted()));
+
         $image = $this->getFile('image');
         if ($image) {
             $this->model->setImage($image);

@@ -128,12 +128,17 @@ class Video
 
     public function getPremiereDate()
     {
+        return $this->premiere_date;
+    }
+
+    public function getPremiereDateFormatted()
+    {
         return Date::dateToHuman($this->premiere_date);
     }
 
     public function setPremiereDate($premiereDate)
     {
-        $this->premiere_date = Date::dateToDatabase($premiereDate);
+        $this->premiere_date = $premiereDate;
     }
 
     public function getAnons()
