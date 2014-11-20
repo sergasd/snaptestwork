@@ -92,7 +92,11 @@ class Repository
 
     protected function update($model)
     {
-        // todo
+        $params = [':id' => $model->getId()];
+        $sql = "UPDATE $this->tableName SET " . $this->generateSetClause($model, $params) . " WHERE id = :id";
+        $stmt = $this->getConnection()->prepare($sql);
+
+        return $stmt->execute($params);
     }
 
     protected function getAttributeFromModel($model, $attribute)
