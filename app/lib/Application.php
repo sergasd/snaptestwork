@@ -33,8 +33,9 @@ class Application
             $dbName = $container->getParam('db.name');
             $userName = $container->getParam('db.user');
             $password = $container->getParam('db.password');
+            $charset = $container->getParam('db.charset');
 
-            $pdo = new \PDO("mysql:host=$dbHost;dbname=$dbName", $userName, $password);
+            $pdo = new \PDO("mysql:host=$dbHost;dbname=$dbName;charset=$charset", $userName, $password);
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             return $pdo;
         });
